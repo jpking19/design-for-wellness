@@ -8,6 +8,7 @@ var faceMode = affdex.FaceDetectorMode.LARGE_FACES;
 var detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
 var totalframes = 0;
 var joyframes = 0;
+var averages = [];
 
 //Enable detection of all Expressions, Emotions and Emojis classifiers.
 detector.detectAllEmojis();
@@ -20,6 +21,45 @@ detector.addEventListener("onInitializeSuccess", function() {
   //Display canvas instead of video feed because we want to draw the feature points on it
   $("#face_video_canvas").css("display", "block");
   $("#face_video").css("display", "none");
+});
+
+const {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = Recharts;
+const SimpleBarChart = React.createClass({
+	render () {
+  	return (
+    	<BarChart width={600} height={300} data={averages}
+            margin={{top: 5, right: 20, left: 20, bottom: 5}}>
+       <CartesianGrid strokeDasharray="3 3"/>
+       <XAxis dataKey="name"/>
+       <YAxis dataKey="average_joy"/>
+       <Tooltip/>
+       <Legend />
+       <Bar dataKey="average_joy" fill="#8884d8" />
+       // <Bar dataKey="uv" fill="#82ca9d" />
+      </BarChart>
+    );
+  }
+})
+
+ReactDOM.render(
+  <SimpleBarChart />,
+  document.getElementById('container')
+);
+
+$('#results').click(function() {
+    window.location.href = '../';
+})
+
+$(document).ready(function(){
+    $("#rock").click(function(){
+        play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
+        this.style.display = "none";
+    });
+
+    // $("#pop").click(function(){
+    //     play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
+    //     this.style.display = "none";
+    // });
 });
 
 function log(node_name, msg) {
@@ -169,10 +209,10 @@ function play_genre_music(genre, song, title, artist, color) {
     // set background to genre color
     $("#g").attr("background-color",color);
 
-    startTimer();
+    startTimer(genre, song);
 }
 
-function startTimer() {
+function startTimer(genre, song) {
    // start logging data
    totalframes = 0;
    joyframes = 0;
@@ -191,29 +231,22 @@ function startTimer() {
 
        if (--timer < 0) {
            display.textContent = duration;
-           document.getElementById('rock_song').pause();
+           document.getElementById(song).pause();
            clearInterval(interval);
 
            // stop logging data
            tf = totalframes;
            jf = joyframes;
-           console.log(tf);
-           console.log(jf);
+           avg = Math.round(jf / tf);
+           averages.push({name: genre, average_joy: avg})
+
+           // allow user to view results
+           if (averages.length() > 1) {
+               document.getElementById('results').disabled = false;
+           }
 
            // set background to black
 
        }
    }, 1000);
 }
-
-$(document).ready(function(){
-    $("#rock").click(function(){
-        play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
-        this.style.display = "none";
-    });
-
-    // $("#pop").click(function(){
-    //     play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
-    //     this.style.display = "none";
-    // });
-});

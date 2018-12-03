@@ -84,11 +84,11 @@ around it.
     <div class="row">
         <center>
             <button id="rock" class="genre btn btn-default" disabled>Rock</button>
-            <button id="pop" class="genre btn btn-default" onclick="" disabled>Pop</button>
-            <button id="country" class="genre btn btn-default" onclick="" disabled>Country</button>
-            <button id="edm" class="genre btn btn-default" onclick="" disabled>EDM</button>
-            <button id="rap" class="genre btn btn-default" onclick="" disabled>Rap</button>
-            <button id="rb" class="genre btn btn-default" onclick="" disabled>R & B</button>
+            <button id="pop" class="genre btn btn-default" disabled>Pop</button>
+            <button id="country" class="genre btn btn-default" disabled>Country</button>
+            <button id="edm" class="genre btn btn-default" disabled>EDM</button>
+            <button id="rap" class="genre btn btn-default" disabled>Rap</button>
+            <button id="rb" class="genre btn btn-default" disabled>R & B</button>
         </center>
     </div>
 
@@ -114,19 +114,13 @@ around it.
         </center>
     </div>
 
-
-    <!-- START: container that holds bottom half of screen– start/stop/reset buttons, Affectiva detector title, instructions -->
     <div class="row">
-      <p>
-        <ol><strong>Instructions</strong>
-        <li>Press the start button to activate the camera and detector. <em>Note: it may take a few moments for everything initialize</em></li>
-        <li>When a face is detected, the probabilities of the different emotions are displayed in the box titled "Emotion Tracking Results".</li>
-        <li> Press the stop button to stop the camera and detection system and/or press reset to restart the detector. </li>
-        </ol>
-      </p>
+        <button id="results" class="genre btn btn-info" >See Your Results</button>
     </div>
-    <!-- END: BOTTOM half of SCREEN container -->
 
+    <div class="row">
+        <div id="container"></div>
+    </div>
 
   </div>
   <!-- END: ENTIRE SCREEN container -->
