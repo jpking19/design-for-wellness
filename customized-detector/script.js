@@ -206,14 +206,44 @@ function startTimer() {
    }, 1000);
 }
 
+/*
+Rock -orange
+pop- green
+country - yellow
+edm - purple
+rap - red
+rb - blue
+*/
+
 $(document).ready(function(){
     $("#rock").click(function(){
-        play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
+        play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'orange');
         this.style.display = "none";
     });
-
-    // $("#pop").click(function(){
-    //     play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
-    //     this.style.display = "none";
-    // });
+  
+    $("#pop").click(function(){
+        play_genre_music('Pop', 'pop_song', 'Rasputin', 'Boney M.', 'green');
+        this.style.display = "none";
+    });
+  
+  $("#country").click(function(){
+        play_genre_music('Country', 'country_song', 'Take Me Home, Country Roads', 'John Denver', 'yellow');
+        this.style.display = "none";
+    });
+  
+  $("#edm").click(function(){
+        play_genre_music('EDM', 'edm_song', 'Get Lucky', 'Daft Punk', 'purple');
+        this.style.display = "none";
+    });
+  
+  $("#rap").click(function(){
+        play_genre_music('Rap', 'rap_song', 'Rap God', 'Eminem', 'red');
+        this.style.display = "none";
+    });
+  
+  $("#rb").click(function(){
+        play_genre_music('R & B', 'rb_song', 'Let\'s get it on', 'Marvin Gaye', 'blue');
+        this.style.display = "none";
+    });
+  
 });
