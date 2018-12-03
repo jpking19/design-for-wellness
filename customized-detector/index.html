@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Affectiva Emotion Detector</title>
+  <title>Emotion Detector - Music Recommender</title>
 <!-- import jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -28,30 +28,38 @@ around it.
 
 <body>
   <!-- the entire window container -->
-  <div class="container-fluid">
-    <h3>Affectiva JS SDK CameraDetector to track different emotions.</h3>
+  <div class="container-fluid center-all">
+    <h2>Discover the music genre for you!</h2>
+
+<hr width= "80%">
+
+    <div class="row">
+        <h3>Step #1: Initialize the face capture!</h3>
+    </div>
 
   <!--START: container for top half of window; goes from above the start/stop/reset buttons to the top of screen -->
     <div class="row">
 
       <!--camera container-->
       <div class="camera-box">
-        
+
       <!-- actual/'physical' camera containers: col-md-8 (child) & affdex_elements (parent selector) -->
         <div class="col-md-8" id="affdex_elements"></div>
           <center>
-          <button id="start" class="bt1" onclick="onStart()">Start</button>
-          <button id="stop" class="bt2" onclick="onStop()">Stop</button>
-          <button id="reset" class="bt3" onclick="onReset()">Reset</button>
+          <button id="start" class="btn btn-success genre" onclick="onStart()">Initialize</button>
+          <button id="stop" class="btn btn-danger genre" onclick="onStop()">Stop</button>
           </center>
       </div>
 
       <!-- "emotion tracking results" and "detector log msgs" container -->
-      <div class="col-md-4">
+      <div class="instructions">
         <!-- "emotion tracking results" container: title & results -->
         <div style="max-height:27em;"> <!-- height controls the height of the emotion tracking results container -->
-          <strong>EMOTION TRACKING RESULTS</strong>
+          <strong>INSTRUCTIONS</strong>
           <!-- subcontainer that displays the detected emotions -->
+
+          <p>these are the instructions</p>
+
           <div id="results" style="word-wrap:break-word;"></div>
         </div>
 <br>
@@ -68,9 +76,47 @@ around it.
     </div>
     <!-- END of UPPER SCREEN container– camera & logs -->
 
+<hr width= "80%">
+    <div class="row">
+        <h3>Step #2: Choose every genre you want to rate, one by one</h3>
+    </div>
+
+    <div class="row">
+        <center>
+            <button id="rock" class="genre btn btn-default" disabled>Rock</button>
+            <button id="pop" class="genre btn btn-default" onclick="" disabled>Pop</button>
+            <button id="country" class="genre btn btn-default" onclick="" disabled>Country</button>
+            <button id="edm" class="genre btn btn-default" onclick="" disabled>EDM</button>
+            <button id="rap" class="genre btn btn-default" onclick="" disabled>Rap</button>
+            <button id="rb" class="genre btn btn-default" onclick="" disabled>R & B</button>
+        </center>
+    </div>
+
+<hr width= "80%">
+
+    <div class="row">
+        <h3>Step #3: Listen to 15 seconds of a popular song from that genre</h3>
+    </div>
+    <div class="row music">
+        <center>
+            <!--  audio clips here -->
+            <audio id="rock_song" src="songs/stairway.mp3" preload="auto"></audio>
+
+            <div id="info">
+                <p id="g">Genre</p>
+                <b id="title">Title</b>
+                <p id="artist">G-Easy</p>
+            </div>
+
+            <div id="countdown">
+                <b id=time>15</b>
+            </div>
+        </center>
+    </div>
+
 
     <!-- START: container that holds bottom half of screen– start/stop/reset buttons, Affectiva detector title, instructions -->
-    <div>
+    <div class="row">
       <p>
         <ol><strong>Instructions</strong>
         <li>Press the start button to activate the camera and detector. <em>Note: it may take a few moments for everything initialize</em></li>

@@ -6,12 +6,13 @@ var height = 340; //Camera feed's height
 var faceMode = affdex.FaceDetectorMode.LARGE_FACES;
 //Construct a CameraDetector and specify the image width / height and face detector mode.
 var detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
+var totalframes = 0;
+var joyframes = 0;
 
 //Enable detection of all Expressions, Emotions and Emojis classifiers.
-detector.detectAllEmotions();
-detector.detectAllExpressions();
 detector.detectAllEmojis();
 detector.detectAllAppearance();
+detector.detectEmotions.joy = true;
 
 //Add a callback to notify when the detector is initialized and ready for running.
 detector.addEventListener("onInitializeSuccess", function() {
@@ -32,6 +33,15 @@ function onStart() {
     detector.start();
   }
   log('#logs', "Clicked the start button");
+
+  // Allow genre buttons to be picked
+  document.getElementById('rock').disabled = false;
+  document.getElementById('pop').disabled = false;
+  document.getElementById('country').disabled = false;
+  document.getElementById('edm').disabled = false;
+  document.getElementById('rap').disabled = false;
+  document.getElementById('rb').disabled = false;
+
 }
 
 //function executes when the Stop button is pushed.
@@ -43,15 +53,15 @@ function onStop() {
   }
 };
 
-//function executes when the Reset button is pushed.
-function onReset() {
-  log('#logs', "Clicked the reset button");
-  if (detector && detector.isRunning) {
-    detector.reset();
-
-    $('#results').html("");
-  }
-};
+// //function executes when the Reset button is pushed.
+// function onReset() {
+//   log('#logs', "Clicked the reset button");
+//   if (detector && detector.isRunning) {
+//     detector.reset();
+//
+//     $('#results').html("");
+//   }
+// };
 
 //Add a callback to notify when camera access is allowed
 detector.addEventListener("onWebcamConnectSuccess", function() {
@@ -77,21 +87,30 @@ detector.addEventListener("onStopSuccess", function() {
 detector.addEventListener("onImageResultsSuccess", function(faces, image,
   timestamp) {
   $('#results').html("");
-  log('#results', "Timestamp: " + timestamp.toFixed(2));
+
   log('#results', "Number of faces found: " + faces.length);
   if (faces.length > 0) {
     // Gets gender, age, facial features
     //Prints all the results to the log
     log('#results', "Appearance: " + JSON.stringify(faces[0].appearance));
 
-    log('#results', "Emotions: " + JSON.stringify(faces[0].emotions,
+    //prints out timestamp and joy ratio when dominant emotion is present
+    if(faces[0].emotions.joy > 80) {
+        log('#results', "Timestamp: " + timestamp.toFixed(2));
+            joyframes+=100;
+        }
+            totalframes++;
+            log('#results', "Joyratio: " + Math.floor(joyframes/totalframes));
+
+    log('#results', "Joy Meter: " + JSON.stringify(faces[0].emotions,
       function(key, val) {
         return val.toFixed ? Number(val.toFixed(0)) : val;
       }));
-    log('#results', "Expressions: " + JSON.stringify(faces[0].expressions,
-      function(key, val) {
-        return val.toFixed ? Number(val.toFixed(0)) : val;
-      }));
+
+    // log('#results', "Expressions: " + JSON.stringify(faces[0].expressions,
+    //   function(key, val) {
+    //     return val.toFixed ? Number(val.toFixed(0)) : val;
+    //   }));
 
     // Return an emoji of face
     log('#results', "Emoji: " + faces[0].emojis.dominantEmoji);
@@ -113,55 +132,6 @@ detector.addEventListener("onImageResultsSuccess", function(faces, image,
     // someCharacter.codePointAt(0) returns a character's (including emojis) unicode number as an integer
     // $('IDorCLASSselector').css(....) is jQuery code for changing an elements CSS- more on that here: https://www.w3schools.com/jquery/css_css.asp
     // #face_video_canvas is Affectiva's camera element ID. When using video filter effects this is the element you select to modify with the jQuery code.
-
-    if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128542){ //disappointed
-          $('body').css({'background-color': '#292c85', "transition": "all .1s ease-in"}); // dark gloomy blue
-          $("#face_video_canvas").css("filter", "grayscale(0.7) hue-rotate(270deg)"); //sad blue camera
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128563){ //flushed
-          $('body').css({'background-color': '#ffb6c1', "transition": "all .1s ease-in"}); // light pink
-          $("#face_video_canvas").css("filter", "hue-rotate(50deg)"); //little more blue
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128535){ //kissing
-          $('body').css({'background-color': '#bc1e1b', "transition": "all .1s ease-in"}); //dark heart red
-          $("#face_video_canvas").css("filter", "sepia(0.8)"); // sepia
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128514){ //laughing
-          $('body').css({'background-color': '#c0ffee', "transition": "all .1s ease-in"}); // pretty baby blue
-          $("#face_video_canvas").css("filter", "brightness(5)"); //brightness up- most
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128545){ //rage
-          $('body').css({'background-color': '#d43a3a', "transition": "all .1s ease-in"}); // darker but bright red
-          $("#face_video_canvas").css("filter", "saturate(8)"); // heatmap
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128528){ //relaxed- default emoji
-          $('body').css({'background-color': '#f7f7f7', "transition": "all .1s ease-in"}); // grey- regular background color
-          $("#face_video_canvas").css("filter", "hue-rotate(0deg)"); //normal camera
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128561){ //scream
-          $('body').css({'background-color': '#0d50f5', "transition": "all .1s ease-in"}); // typical blue
-          $("#face_video_canvas").css("filter", "blur(7px)"); //blurred camera
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 9786 || faces[0].emojis.dominantEmoji.codePointAt(0) == 128515){ //text-symbol smiley OR emoji open-mouth smiley
-          $('body').css({'background-color': '#fff44f', "transition": "all .1s ease-in"}); // yellow
-          $("#face_video_canvas").css("filter", "brightness(2)"); //brightness up- mild
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128527){ //smirk
-          $('body').css({'background-color': '#297E63', "transition": "all .1s ease-in"}); // turtle body green
-          $("#face_video_canvas").css("filter", "grayscale(50%)"); //half-grayscale
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128539){ //stuck out tongue with both eyes open
-          $('body').css({'background-color': '#fffcc9', "transition": "all .1s ease-in"}); // baby yellow
-          $("#face_video_canvas").css("filter", "saturate(3)"); // mild saturation
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128540){ //stuck out tongue with winking eye
-          $('body').css({'background-color': '#5ad', "transition": "all .1s ease-in"}); // pretty, mild blue
-          $("#face_video_canvas").css("filter", "saturate(5)"); // medium saturation
-    }
-    else if(faces[0].emojis.dominantEmoji.codePointAt(0) == 128521){ //wink
-          $('body').css({'background-color': '#AEA4A4', "transition": "all .1s ease-in"}); //light brownish-purple
-          $("#face_video_canvas").css("filter", "blur(2px) grayscale(.2) opacity(0.8) hue-rotate(20deg)"); // ligh browish-purple blurred out camera
-    }
   }
 });
 
@@ -182,3 +152,68 @@ function drawFeaturePoints(img, featurePoints) {
 
   }
 }
+
+
+// CUSTOM FUNCTIONS & JQUERY
+
+
+function play_genre_music(genre, song, title, artist, color) {
+    // play song
+    document.getElementById(song).play();
+
+    // set song-specific text
+    $("#title").text(title);
+    $("#g").text(genre);
+    $("#artist").text(artist);
+
+    // set background to genre color
+    $("#g").attr("background-color",color);
+
+    startTimer();
+}
+
+function startTimer() {
+   // start logging data
+   totalframes = 0;
+   joyframes = 0;
+   // $("")
+
+   var timer = 14, seconds;
+   duration = 15
+   display = document.querySelector('#time');
+
+   var interval = setInterval(function () {
+       seconds = parseInt(timer, 10);
+
+       seconds = seconds < 10 ? "0" + seconds : seconds;
+
+       display.textContent = seconds;
+
+       if (--timer < 0) {
+           display.textContent = duration;
+           document.getElementById('rock_song').pause();
+           clearInterval(interval);
+
+           // stop logging data
+           tf = totalframes;
+           jf = joyframes;
+           console.log(tf);
+           console.log(jf);
+
+           // set background to black
+
+       }
+   }, 1000);
+}
+
+$(document).ready(function(){
+    $("#rock").click(function(){
+        play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
+        this.style.display = "none";
+    });
+
+    // $("#pop").click(function(){
+    //     play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
+    //     this.style.display = "none";
+    // });
+});

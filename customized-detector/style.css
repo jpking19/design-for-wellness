@@ -21,20 +21,24 @@ body {
 ::-webkit-scrollbar-thumb:window-inactive {
 	background: rgba(255,0,0,0.4);
 }
-h3{
-  text-align:center;
+
+hr{
+    border: 1px solid grey;
 }
 
 /* emotion detection results & detector log msgs container */
-.col-md-4{
+.instructions{
   max-height:421px;
   opacity: .94;
   background-color: #fff;
   margin: 10px;
+  margin-right: 20%;
   width: 500px;
   border: 1px solid #555;
   overflow:hidden;
-  float:left;
+  float:right;
+  border-radius: 25px;
+  /* display: inline-block; */
 }
 
 /* "detector log msgs" actual messages container */
@@ -45,19 +49,27 @@ h3{
   overflow-y:scroll;
 }
 
+.row{
+    margin-top: 50px;
+}
+
+.center-all{
+    text-align: center
+}
+
 /* Parent container that holds camera containers within*/
 .camera-box{
   margin: 10px;
+  margin-left: 20%;
   border: solid 1px #555;
   background-color: #fff;
-  width:470px;
+  width: 470px;
   height: 410px;
-  float:left;
-  -webkit-box-shadow: 0 1px 10px #999;
-  -moz-box-shadow: 0 1px 10px #999;
-  -ms-box-shadow: 0 1px 10px #999;
-  -o-box-shadow: 0 1px 10px #999;
-  box-shadow: 0 1px 10px #999;
+  float: left;
+  display: inline-block;
+  border-radius: 25px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 /* Subcontainer inside .camera-box that holds camera/detector and buttons*/
@@ -91,4 +103,105 @@ h3{
 /* button 3*/
 .bt3{
   background-color: #008CBA
+}
+
+
+h3{
+  text-align:center;
+}
+
+#start{
+  margin-top: 8px;
+  margin-left: 10px;
+  float: left;
+}
+
+#stop{
+    margin-top: 8px;
+    margin-right: 10px;
+    float: right;
+}
+
+.genre{
+    margin: 25px;
+    width: 125px;
+    color: black;
+    font-size: 25px;
+}
+
+.card{
+    background-color: purple;
+}
+
+#rock{
+    background-color: orange;
+}
+
+#pop{
+    background-color: green;
+}
+
+#country{
+    background-color: yellow;
+}
+
+#edm{
+    background-color: purple;
+}
+
+#rb{
+    background-color: blue;
+}
+
+#rap{
+    background-color: red;
+}
+
+#info{
+    height:200px;
+    opacity: .94;
+    background-color: #fff;
+    margin: 10px;
+    margin-left: 24%;
+    width: 400px;
+    border: 1px solid #555;
+    overflow:hidden;
+    float: left;
+    border-radius: 25px;
+}
+
+#countdown{
+    height:200px;
+    opacity: .94;
+    background-color: #fff;
+    margin: 10px;
+    margin-right: 36%;
+    width: 200px;
+    border: 1px solid #555;
+    overflow:hidden;
+    float:right;
+    border-radius: 25px;
+}
+
+#g{
+    color: black;
+    font-size: 25px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+#title{
+    color: black;
+    font-size: 25px;
+}
+
+#artist{
+    color: black;
+    font-size: 25px;
+}
+
+#time{
+    line-height: 200px;
+    color: black;
+    font-size: 75px;
 }
