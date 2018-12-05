@@ -133,6 +133,18 @@ h3{
     background-color: purple;
 }
 
+strong{
+    font-size: 20px;
+    margin: 5px;
+    margin-top: 15px;
+
+}
+
+p{
+    font-size: 20px;
+    margin: 15px;
+}
+
 #rock{
     background-color: orange;
 }
@@ -147,10 +159,12 @@ h3{
 
 #edm{
     background-color: purple;
+    color: white;
 }
 
 #rb{
     background-color: blue;
+    color: white;
 }
 
 #rap{

@@ -5,6 +5,8 @@
   <title>Emotion Detector - Music Recommender</title>
 <!-- import jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--  import CanvasJS-->
+<script type="text/javascript" src="canvasjs.min.js"></script>
 
 <!--import default Affectiva CSS code-->
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
@@ -46,29 +48,32 @@ around it.
       <!-- actual/'physical' camera containers: col-md-8 (child) & affdex_elements (parent selector) -->
         <div class="col-md-8" id="affdex_elements"></div>
           <center>
-          <button id="start" class="btn btn-success genre" onclick="onStart()">Initialize</button>
-          <button id="stop" class="btn btn-danger genre" onclick="onStop()">Stop</button>
+          <button id="start" class="btn btn-success genre" style="background-color: green" onclick="onStart()">Initialize</button>
+          <button id="stop" class="btn btn-danger genre" style="background-color" onclick="onStop()">Stop</button>
           </center>
       </div>
 
       <!-- "emotion tracking results" and "detector log msgs" container -->
       <div class="instructions">
         <!-- "emotion tracking results" container: title & results -->
-        <div style="max-height:27em;"> <!-- height controls the height of the emotion tracking results container -->
+        <div style="max-height:27em; margin-top: 20px"> <!-- height controls the height of the emotion tracking results container -->
           <strong>INSTRUCTIONS</strong>
           <!-- subcontainer that displays the detected emotions -->
 
-          <p>these are the instructions</p>
+          <p align="left">1. <b>Initialize</b> and <b>allow</b> permissions for the camera.</p>
+          <p align="left">2. <b>Select</b> a music genre and react to the music played.</p>
+          <p align="left">3. After you have listened to 2 or more genres, <b>click</b> the results button the bottom of the page to view your results!</p>
+          <p align="left">4. <b>View</b> the results chart to see which genre of music we think you enjoyed most :)</p>
 
-          <div id="results" style="word-wrap:break-word;"></div>
+          <!-- <div id="results" style="word-wrap:break-word;"></div> -->
         </div>
 <br>
         <!-- "detector log msgs" title container -->
-        <div>
+        <!-- <div>
           <strong>DETECTOR LOG MSGS</strong>– scroll once full
-        </div>
+        </div> -->
         <!-- "detector log msgs" log container -->
-        <div id="logs"></div>
+        <!-- <div id="logs"></div> -->
 
       </div>
       <!-- END of RIGHT SIDE container– the emotion tracking results and detector log msgs -->
@@ -83,12 +88,12 @@ around it.
 
     <div class="row">
         <center>
-            <button id="rock" class="genre btn btn-default" disabled>Rock</button>
-            <button id="pop" class="genre btn btn-default" disabled>Pop</button>
-            <button id="country" class="genre btn btn-default" disabled>Country</button>
-            <button id="edm" class="genre btn btn-default" disabled>EDM</button>
-            <button id="rap" class="genre btn btn-default" disabled>Rap</button>
-            <button id="rb" class="genre btn btn-default" disabled>R & B</button>
+            <button id="rock" class="genre btn" disabled>Rock</button>
+            <button id="pop" class="genre btn " disabled>Pop</button>
+            <button id="country" class="genre btn" disabled>Country</button>
+            <button id="edm" class="genre btn" disabled>EDM</button>
+            <button id="rap" class="genre btn" disabled>Rap</button>
+            <button id="rb" class="genre btn" disabled>R & B</button>
         </center>
     </div>
 
@@ -100,12 +105,17 @@ around it.
     <div class="row music">
         <center>
             <!--  audio clips here -->
-            <audio id="rock_song" src="songs/stairway.mp3" preload="auto"></audio>
+            <audio id="rock_song" src="songs/rock_song.mp3" preload="auto"></audio>
+            <audio id="pop_song" src="songs/pop_song.mp3" preload="auto"></audio>
+            <audio id="country_song" src="songs/country_song.mp3" preload="auto"></audio>
+            <audio id="edm_song" src="songs/edm_song.mp3" preload="auto"></audio>
+            <audio id="rap_song" src="songs/rap_song.mp3" preload="auto"></audio>
+            <audio id="rb_song" src="songs/rb_song.mp3" preload="auto"></audio>
 
             <div id="info">
                 <p id="g">Genre</p>
                 <b id="title">Title</b>
-                <p id="artist">G-Easy</p>
+                <p id="artist">Artist</p>
             </div>
 
             <div id="countdown">
@@ -115,11 +125,11 @@ around it.
     </div>
 
     <div class="row">
-        <button id="results" class="genre btn btn-info" >See Your Results</button>
+        <button id="results2" type="button" class="genre btn" style="width: 225px; background-color: green; color: black; font-size: 25px; " disabled >See Your Results</button>
     </div>
 
-    <div class="row">
-        <div id="container"></div>
+    <div class="row" style="text-align: center">
+        <div id="chartContainer" style="height: 500px; width: 50%; display: inline-block"></div>
     </div>
 
   </div>

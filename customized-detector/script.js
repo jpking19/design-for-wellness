@@ -9,6 +9,14 @@ var detector = new affdex.CameraDetector(divRoot, width, height, faceMode);
 var totalframes = 0;
 var joyframes = 0;
 var averages = [];
+var rock_ratio = 0;
+var pop_ratio = 0;
+var edm_ratio = 0;
+var country_ratio = 0;
+var rb_ratio = 0;
+var rap_ratio = 0;
+
+
 
 //Enable detection of all Expressions, Emotions and Emojis classifiers.
 detector.detectAllEmojis();
@@ -21,46 +29,19 @@ detector.addEventListener("onInitializeSuccess", function() {
   //Display canvas instead of video feed because we want to draw the feature points on it
   $("#face_video_canvas").css("display", "block");
   $("#face_video").css("display", "none");
+
+  var runButton = document.getElementById("results2");
+  runButton.addEventListener("click", makeChart);
+
+  // Allow genre buttons to be picked
+  document.getElementById('rock').disabled = false;
+  document.getElementById('pop').disabled = false;
+  document.getElementById('country').disabled = false;
+  document.getElementById('edm').disabled = false;
+  document.getElementById('rap').disabled = false;
+  document.getElementById('rb').disabled = false;
 });
 
-const {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = Recharts;
-const SimpleBarChart = React.createClass({
-	render () {
-  	return (
-    	<BarChart width={600} height={300} data={averages}
-            margin={{top: 5, right: 20, left: 20, bottom: 5}}>
-       <CartesianGrid strokeDasharray="3 3"/>
-       <XAxis dataKey="name"/>
-       <YAxis dataKey="average_joy"/>
-       <Tooltip/>
-       <Legend />
-       <Bar dataKey="average_joy" fill="#8884d8" />
-       // <Bar dataKey="uv" fill="#82ca9d" />
-      </BarChart>
-    );
-  }
-})
-
-ReactDOM.render(
-  <SimpleBarChart />,
-  document.getElementById('container')
-);
-
-$('#results').click(function() {
-    window.location.href = '../';
-})
-
-$(document).ready(function(){
-    $("#rock").click(function(){
-        play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
-        this.style.display = "none";
-    });
-
-    // $("#pop").click(function(){
-    //     play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'green');
-    //     this.style.display = "none";
-    // });
-});
 
 function log(node_name, msg) {
   $(node_name).append("<span>" + msg + "</span><br />")
@@ -73,14 +54,6 @@ function onStart() {
     detector.start();
   }
   log('#logs', "Clicked the start button");
-
-  // Allow genre buttons to be picked
-  document.getElementById('rock').disabled = false;
-  document.getElementById('pop').disabled = false;
-  document.getElementById('country').disabled = false;
-  document.getElementById('edm').disabled = false;
-  document.getElementById('rap').disabled = false;
-  document.getElementById('rb').disabled = false;
 
 }
 
@@ -175,6 +148,8 @@ detector.addEventListener("onImageResultsSuccess", function(faces, image,
   }
 });
 
+
+
 //Draw the detected facial feature points on the image
 function drawFeaturePoints(img, featurePoints) {
   var contxt = $('#face_video_canvas')[0].getContext('2d');
@@ -213,6 +188,15 @@ function play_genre_music(genre, song, title, artist, color) {
 }
 
 function startTimer(genre, song) {
+   // lock other buttons
+   // Allow genre buttons to be picked
+   document.getElementById('rock').disabled = true;
+   document.getElementById('pop').disabled = true;
+   document.getElementById('country').disabled = true;
+   document.getElementById('edm').disabled = true;
+   document.getElementById('rap').disabled = true;
+   document.getElementById('rb').disabled = true;
+
    // start logging data
    totalframes = 0;
    joyframes = 0;
@@ -238,17 +222,58 @@ function startTimer(genre, song) {
            tf = totalframes;
            jf = joyframes;
            avg = Math.round(jf / tf);
-           averages.push({name: genre, average_joy: avg})
+           averages.push({label: genre, y: avg});
 
-           // allow user to view results
-           if (averages.length() > 1) {
-               document.getElementById('results').disabled = false;
+           console.log(averages)
+
+           // allow user to view F
+           if (averages.length > 1) {
+               document.getElementById('results2').disabled = false;
            }
 
-           // set background to black
+           // unlock buttons
+           document.getElementById('rock').disabled = false;
+           document.getElementById('pop').disabled = false;
+           document.getElementById('country').disabled = false;
+           document.getElementById('edm').disabled = false;
+           document.getElementById('rap').disabled = false;
+           document.getElementById('rb').disabled = false;
 
        }
    }, 1000);
+}
+
+function makeChart() {
+    console.log(averages);
+
+    var chart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      theme: "light2", // "light1", "light2", "dark1", "dark2"
+      title:{
+          text: "Results"
+      },
+      axisY: {
+          title: "Joy Ratio"
+      },
+      data: [{
+          type: "column",
+          showInLegend: true,
+
+          legendText: "Music Genre",
+          dataPoints: averages
+                  //   [
+                  //     { y: 300878, label: "Venezuela" },
+                  //     { y: 266455,  label: "Saudi" },
+                  //     { y: 169709,  label: "Canada" },
+                  //     { y: 158400,  label: "Iran" },
+                  //     { y: 142503,  label: "Iraq" },
+                  //     { y: 101500, label: "Kuwait" },
+                  //     { y: 97800,  label: "UAE" },
+                  //     { y: 80000,  label: "Russia" }
+                  // ]
+      }]
+    });
+    chart.render();
 }
 
 /*
@@ -264,31 +289,37 @@ $(document).ready(function(){
     $("#rock").click(function(){
         play_genre_music('Classic Rock', 'rock_song', 'Stairway to Heaven', 'Led Zeppelin', 'orange');
         this.style.display = "none";
+        rock_ratio = joyframes / totalframes;
     });
 
     $("#pop").click(function(){
         play_genre_music('Pop', 'pop_song', 'Rasputin', 'Boney M.', 'green');
         this.style.display = "none";
+        pop_ratio = joyframes / totalframes;
     });
 
   $("#country").click(function(){
         play_genre_music('Country', 'country_song', 'Take Me Home, Country Roads', 'John Denver', 'yellow');
         this.style.display = "none";
+        country_ratio = joyframes / totalframes;
     });
 
   $("#edm").click(function(){
         play_genre_music('EDM', 'edm_song', 'Get Lucky', 'Daft Punk', 'purple');
         this.style.display = "none";
+        edm_ratio = joyframes / totalframes;
     });
 
   $("#rap").click(function(){
         play_genre_music('Rap', 'rap_song', 'Rap God', 'Eminem', 'red');
         this.style.display = "none";
+        rap_ratio = joyframes / totalframes;
     });
 
   $("#rb").click(function(){
         play_genre_music('R & B', 'rb_song', 'Let\'s get it on', 'Marvin Gaye', 'blue');
         this.style.display = "none";
+        rb_ratio = joyframes / totalframes;
     });
 
 });
